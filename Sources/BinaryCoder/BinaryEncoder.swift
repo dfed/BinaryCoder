@@ -41,9 +41,6 @@ public extension BinaryEncoder {
         /// require `BinaryEncodable` because `BinaryEncoder` doesn't support full keyed
         /// coding functionality.)
         case typeNotConformingToBinaryEncodable(Encodable.Type)
-        
-        /// Attempted to encode a type which is not `Encodable`.
-        case typeNotConformingToEncodable(Any.Type)
     }
 }
 
