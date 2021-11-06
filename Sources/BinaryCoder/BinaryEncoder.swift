@@ -92,26 +92,26 @@ extension BinaryEncoder {
 }
 
 extension BinaryEncoder: Encoder {
-    public var codingPath: [CodingKey] { return [] }
+    public var codingPath: [CodingKey] { [] }
     
-    public var userInfo: [CodingUserInfoKey : Any] { return [:] }
+    public var userInfo: [CodingUserInfoKey : Any] { [:] }
     
     public func container<Key>(keyedBy type: Key.Type) -> KeyedEncodingContainer<Key> where Key : CodingKey {
-        return KeyedEncodingContainer(KeyedContainer<Key>(encoder: self))
+        KeyedEncodingContainer(KeyedContainer<Key>(encoder: self))
     }
     
     public func unkeyedContainer() -> UnkeyedEncodingContainer {
-        return UnkeyedContainer(encoder: self)
+        UnkeyedContainer(encoder: self)
     }
     
     public func singleValueContainer() -> SingleValueEncodingContainer {
-        return UnkeyedContainer(encoder: self)
+        UnkeyedContainer(encoder: self)
     }
     
     private struct KeyedContainer<Key: CodingKey>: KeyedEncodingContainerProtocol {
         var encoder: BinaryEncoder
         
-        var codingPath: [CodingKey] { return [] }
+        var codingPath: [CodingKey] { [] }
         
         func encode<T>(_ value: T, forKey key: Key) throws where T : Encodable {
             try encoder.encode(value)
@@ -120,39 +120,39 @@ extension BinaryEncoder: Encoder {
         func encodeNil(forKey key: Key) throws {}
         
         func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type, forKey key: Key) -> KeyedEncodingContainer<NestedKey> where NestedKey : CodingKey {
-            return encoder.container(keyedBy: keyType)
+            encoder.container(keyedBy: keyType)
         }
         
         func nestedUnkeyedContainer(forKey key: Key) -> UnkeyedEncodingContainer {
-            return encoder.unkeyedContainer()
+            encoder.unkeyedContainer()
         }
         
         func superEncoder() -> Encoder {
-            return encoder
+            encoder
         }
         
         func superEncoder(forKey key: Key) -> Encoder {
-            return encoder
+            encoder
         }
     }
     
     private struct UnkeyedContainer: UnkeyedEncodingContainer, SingleValueEncodingContainer {
         var encoder: BinaryEncoder
         
-        var codingPath: [CodingKey] { return [] }
+        var codingPath: [CodingKey] { [] }
         
-        var count: Int { return 0 }
+        var count: Int { 0 }
 
         func nestedContainer<NestedKey>(keyedBy keyType: NestedKey.Type) -> KeyedEncodingContainer<NestedKey> where NestedKey : CodingKey {
-            return encoder.container(keyedBy: keyType)
+            encoder.container(keyedBy: keyType)
         }
         
         func nestedUnkeyedContainer() -> UnkeyedEncodingContainer {
-            return self
+            self
         }
         
         func superEncoder() -> Encoder {
-            return encoder
+            encoder
         }
         
         func encodeNil() throws {}

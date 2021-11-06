@@ -30,7 +30,7 @@ public class BinaryDecoder {
 /// into a value all in one shot.
 extension BinaryDecoder {
     public static func decode<T: BinaryDecodable>(_ type: T.Type, data: [UInt8]) throws -> T {
-        return try BinaryDecoder(data: data).decode(T.self)
+        try BinaryDecoder(data: data).decode(T.self)
     }
 }
 
@@ -149,87 +149,87 @@ extension BinaryDecoder {
 }
 
 extension BinaryDecoder: Decoder {
-    public var codingPath: [CodingKey] { return [] }
+    public var codingPath: [CodingKey] { [] }
     
-    public var userInfo: [CodingUserInfoKey : Any] { return [:] }
+    public var userInfo: [CodingUserInfoKey : Any] { [:] }
     
     public func container<Key>(keyedBy type: Key.Type) throws -> KeyedDecodingContainer<Key> where Key : CodingKey {
-        return KeyedDecodingContainer(KeyedContainer<Key>(decoder: self))
+        KeyedDecodingContainer(KeyedContainer<Key>(decoder: self))
     }
     
     public func unkeyedContainer() throws -> UnkeyedDecodingContainer {
-        return UnkeyedContainer(decoder: self)
+        UnkeyedContainer(decoder: self)
     }
     
     public func singleValueContainer() throws -> SingleValueDecodingContainer {
-        return UnkeyedContainer(decoder: self)
+        UnkeyedContainer(decoder: self)
     }
     
     private struct KeyedContainer<Key: CodingKey>: KeyedDecodingContainerProtocol {
         var decoder: BinaryDecoder
         
-        var codingPath: [CodingKey] { return [] }
+        var codingPath: [CodingKey] { [] }
         
-        var allKeys: [Key] { return [] }
+        var allKeys: [Key] { [] }
         
         func contains(_ key: Key) -> Bool {
-            return true
+            true
         }
         
         func decode<T>(_ type: T.Type, forKey key: Key) throws -> T where T : Decodable {
-            return try decoder.decode(T.self)
+            try decoder.decode(T.self)
         }
         
         func decodeNil(forKey key: Key) throws -> Bool {
-            return true
+            true
         }
         
         func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type, forKey key: Key) throws -> KeyedDecodingContainer<NestedKey> where NestedKey : CodingKey {
-            return try decoder.container(keyedBy: type)
+            try decoder.container(keyedBy: type)
         }
         
         func nestedUnkeyedContainer(forKey key: Key) throws -> UnkeyedDecodingContainer {
-            return try decoder.unkeyedContainer()
+            try decoder.unkeyedContainer()
         }
         
         func superDecoder() throws -> Decoder {
-            return decoder
+            decoder
         }
         
         func superDecoder(forKey key: Key) throws -> Decoder {
-            return decoder
+            decoder
         }
     }
     
     private struct UnkeyedContainer: UnkeyedDecodingContainer, SingleValueDecodingContainer {
         var decoder: BinaryDecoder
         
-        var codingPath: [CodingKey] { return [] }
+        var codingPath: [CodingKey] { [] }
         
-        var count: Int? { return nil }
+        var count: Int? { nil }
         
-        var currentIndex: Int { return 0 }
+        var currentIndex: Int { 0 }
 
-        var isAtEnd: Bool { return false }
+        var isAtEnd: Bool { false }
         
         func decode<T>(_ type: T.Type) throws -> T where T : Decodable {
-            return try decoder.decode(type)
+            try decoder.decode(type)
         }
         
         func decodeNil() -> Bool {
-            return true
+            true
         }
         
         func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type) throws -> KeyedDecodingContainer<NestedKey> where NestedKey : CodingKey {
-            return try decoder.container(keyedBy: type)
+            try decoder.container(keyedBy: type)
         }
         
         func nestedUnkeyedContainer() throws -> UnkeyedDecodingContainer {
-            return self
+            self
         }
         
         func superDecoder() throws -> Decoder {
-            return decoder
+            decoder
         }
     }
 }
