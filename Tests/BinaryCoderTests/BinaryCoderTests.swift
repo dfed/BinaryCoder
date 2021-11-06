@@ -47,7 +47,7 @@ class BinaryCoderTests: XCTestCase {
     }
     
     func testString() {
-        struct WithString: BinaryCodable {
+        struct WithString: BinaryCodable, Equatable {
             var a: String
             var b: String
             var c: Int
@@ -56,12 +56,12 @@ class BinaryCoderTests: XCTestCase {
     }
     
     func testComplex() {
-        struct Company: BinaryCodable {
+        struct Company: BinaryCodable, Equatable {
             var name: String
             var employees: [Employee]
         }
         
-        struct Employee: BinaryCodable {
+        struct Employee: BinaryCodable, Equatable {
             var name: String
             var jobTitle: String
             var age: Int
@@ -77,21 +77,17 @@ class BinaryCoderTests: XCTestCase {
     }
 }
 
-private func AssertEqual<T>(_ lhs: T, _ rhs: T, file: StaticString = #file, line: UInt = #line) {
-    XCTAssertEqual(String(describing: lhs), String(describing: rhs), file: file, line: line)
-}
-
-private func AssertRoundtrip<T: BinaryCodable>(_ original: T, file: StaticString = #file, line: UInt = #line) {
+private func AssertRoundtrip<T: BinaryCodable & Equatable>(_ original: T, file: StaticString = #file, line: UInt = #line) {
     do {
         let data = try BinaryEncoder.encode(original)
         let roundtripped = try BinaryDecoder.decode(T.self, data: data)
-        AssertEqual(original, roundtripped, file: file, line: line)
+        XCTAssertEqual(original, roundtripped, file: file, line: line)
     } catch {
         XCTFail("Unexpected error: \(error)", file: file, line: line)
     }
 }
 
-struct Primitives: BinaryCodable {
+struct Primitives: BinaryCodable, Equatable {
     var a: Int8
     var b: UInt16
     var c: Int32
