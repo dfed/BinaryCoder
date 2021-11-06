@@ -100,3 +100,5 @@ extension Int64: BinaryCodable {}
 extension UInt64: BinaryCodable {}
 
 extension Int: BinaryCodable {}
+
+extension Bool: BinaryCodable {}

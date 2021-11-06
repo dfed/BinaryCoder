@@ -85,6 +85,11 @@ class BinaryCoderTests: XCTestCase {
         let dictionary = [1: "one", 2: "two", 3: "three", 4: "four", 5: "five"]
         try AssertRoundtrip(dictionary)
     }
+
+    func testBool() throws {
+        try AssertRoundtrip(true)
+        try AssertRoundtrip(false)
+    }
 }
 
 private func AssertRoundtrip<T: BinaryCodable & Equatable>(_ original: T, file: StaticString = #file, line: UInt = #line) throws {
