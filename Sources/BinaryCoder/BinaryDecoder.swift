@@ -18,8 +18,8 @@ public extension BinaryDecodable {
 
 /// The actual binary decoder class.
 public class BinaryDecoder {
-    fileprivate let data: [UInt8]
-    fileprivate var cursor = 0
+    private let data: [UInt8]
+    private var cursor = 0
     
     public init(data: [UInt8]) {
         self.data = data

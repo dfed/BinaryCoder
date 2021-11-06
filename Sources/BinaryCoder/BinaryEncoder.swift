@@ -18,7 +18,7 @@ public extension BinaryEncodable {
 
 /// The actual binary encoder class.
 public class BinaryEncoder {
-    fileprivate var data: [UInt8] = []
+    private var data: [UInt8] = []
     
     public init() {}
 }
