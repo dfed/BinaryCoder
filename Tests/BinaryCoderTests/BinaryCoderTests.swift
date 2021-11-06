@@ -80,6 +80,11 @@ class BinaryCoderTests: XCTestCase {
         let set: Set<Int64> = Set([1, 2, 3, 4, 5])
         AssertRoundtrip(set)
     }
+
+    func testDictionary() {
+        let dictionary: [Int64: String] = [1: "one", 2: "two", 3: "three", 4: "four", 5: "five"]
+        AssertRoundtrip(dictionary)
+    }
 }
 
 private func AssertRoundtrip<T: BinaryCodable & Equatable>(_ original: T, file: StaticString = #file, line: UInt = #line) {

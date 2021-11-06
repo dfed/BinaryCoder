@@ -32,6 +32,29 @@ extension Set: BinaryCodable where Element: BinaryCodable {
     }
 }
 
+extension Dictionary: BinaryCodable where Key: BinaryCodable, Value: BinaryCodable {
+    public func binaryEncode(to encoder: BinaryEncoder) throws {
+        try map { KeyValuePair(
+            key: $0.key,
+            value: $0.value)
+        }.binaryEncode(to: encoder)
+    }
+
+    public init(fromBinary decoder: BinaryDecoder) throws {
+        self = try Dictionary(
+            uniqueKeysWithValues: Array<KeyValuePair<Key, Value>>(
+                fromBinary: decoder)
+                .map {
+                    (key: $0.key, value: $0.value)
+                })
+    }
+}
+
+private struct KeyValuePair<Key: BinaryCodable, Value: BinaryCodable>: BinaryCodable {
+    let key: Key
+    let value: Value
+}
+
 extension String: BinaryCodable {
     public func binaryEncode(to encoder: BinaryEncoder) throws {
         try Array(self.utf8).binaryEncode(to: encoder)
