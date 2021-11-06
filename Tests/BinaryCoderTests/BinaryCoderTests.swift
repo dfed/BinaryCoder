@@ -77,12 +77,12 @@ class BinaryCoderTests: XCTestCase {
     }
 
     func testSet() {
-        let set: Set<Int64> = Set([1, 2, 3, 4, 5])
+        let set = Set([1, 2, 3, 4, 5])
         AssertRoundtrip(set)
     }
 
     func testDictionary() {
-        let dictionary: [Int64: String] = [1: "one", 2: "two", 3: "three", 4: "four", 5: "five"]
+        let dictionary = [1: "one", 2: "two", 3: "three", 4: "four", 5: "five"]
         AssertRoundtrip(dictionary)
     }
 }

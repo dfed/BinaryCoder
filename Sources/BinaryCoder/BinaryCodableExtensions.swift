@@ -98,3 +98,5 @@ extension Int32: BinaryCodable {}
 extension UInt32: BinaryCodable {}
 extension Int64: BinaryCodable {}
 extension UInt64: BinaryCodable {}
+
+extension Int: BinaryCodable {}
