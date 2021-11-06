@@ -75,6 +75,11 @@ class BinaryCoderTests: XCTestCase {
         ])
         AssertRoundtrip(company)
     }
+
+    func testSet() {
+        let set: Set<Int64> = Set([1, 2, 3, 4, 5])
+        AssertRoundtrip(set)
+    }
 }
 
 private func AssertRoundtrip<T: BinaryCodable & Equatable>(_ original: T, file: StaticString = #file, line: UInt = #line) {

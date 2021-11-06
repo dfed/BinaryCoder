@@ -22,6 +22,16 @@ extension Array: BinaryCodable where Element: BinaryCodable {
     }
 }
 
+extension Set: BinaryCodable where Element: BinaryCodable {
+    public func binaryEncode(to encoder: BinaryEncoder) throws {
+        try Array(self).binaryEncode(to: encoder)
+    }
+
+    public init(fromBinary decoder: BinaryDecoder) throws {
+        self = Set(try Array(fromBinary: decoder))
+    }
+}
+
 extension String: BinaryCodable {
     public func binaryEncode(to encoder: BinaryEncoder) throws {
         try Array(self.utf8).binaryEncode(to: encoder)
@@ -65,4 +75,3 @@ extension Int32: BinaryCodable {}
 extension UInt32: BinaryCodable {}
 extension Int64: BinaryCodable {}
 extension UInt64: BinaryCodable {}
-
