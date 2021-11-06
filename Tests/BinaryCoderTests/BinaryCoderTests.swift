@@ -46,16 +46,16 @@ class BinaryCoderTests: XCTestCase {
         XCTAssertEqual(s.i, true)
     }
     
-    func testString() {
+    func testString() throws {
         struct WithString: BinaryCodable, Equatable {
             var a: String
             var b: String
             var c: Int
         }
-        AssertRoundtrip(WithString(a: "hello", b: "world", c: 42))
+        try AssertRoundtrip(WithString(a: "hello", b: "world", c: 42))
     }
     
-    func testComplex() {
+    func testComplex() throws {
         struct Company: BinaryCodable, Equatable {
             var name: String
             var employees: [Employee]
@@ -73,28 +73,24 @@ class BinaryCoderTests: XCTestCase {
             Employee(name: "Dracula", jobTitle: "Dracula", age: 41),
             Employee(name: "Steve Jobs", jobTitle: "Visionary", age: 56),
         ])
-        AssertRoundtrip(company)
+        try AssertRoundtrip(company)
     }
 
-    func testSet() {
+    func testSet() throws {
         let set = Set([1, 2, 3, 4, 5])
-        AssertRoundtrip(set)
+        try AssertRoundtrip(set)
     }
 
-    func testDictionary() {
+    func testDictionary() throws {
         let dictionary = [1: "one", 2: "two", 3: "three", 4: "four", 5: "five"]
-        AssertRoundtrip(dictionary)
+        try AssertRoundtrip(dictionary)
     }
 }
 
-private func AssertRoundtrip<T: BinaryCodable & Equatable>(_ original: T, file: StaticString = #file, line: UInt = #line) {
-    do {
-        let data = try BinaryEncoder.encode(original)
-        let roundtripped = try BinaryDecoder.decode(T.self, data: data)
-        XCTAssertEqual(original, roundtripped, file: file, line: line)
-    } catch {
-        XCTFail("Unexpected error: \(error)", file: file, line: line)
-    }
+private func AssertRoundtrip<T: BinaryCodable & Equatable>(_ original: T, file: StaticString = #file, line: UInt = #line) throws {
+    let data = try BinaryEncoder.encode(original)
+    let roundtripped = try BinaryDecoder.decode(T.self, data: data)
+    XCTAssertEqual(original, roundtripped, file: file, line: line)
 }
 
 struct Primitives: BinaryCodable, Equatable {
